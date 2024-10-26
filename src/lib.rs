@@ -89,10 +89,10 @@ impl MandlebrotImage {
                 let y0 = scale_mandle_y.min + (p_y as f64 / image_height as f64) * (scale_mandle_y.max - scale_mandle_y.min);
                 
                 let mut iter: u32 = 0;
+                let mut x: f64 = 0.0;
+                let mut y: f64 = 0.0;
 
                 // // Expensive Brute Logic: escape time algorithm
-                // let mut x: f64 = 0.0;
-                // let mut y: f64 = 0.0;
                 // while x * x + y * y <= 2.0 * 2.0 && iter < self.color_count - 1 {
                 //     let xtemp: f64 = x * x - y * y + x0;
                 //     y = 2.0 * x * y + y0;
@@ -100,17 +100,29 @@ impl MandlebrotImage {
                 //     iter += 1;
                 // }
 
-                // Optimised Brute Logic: escape time algorithm
+                // // Optimised Brute Logic: escape time algorithm
+                // let mut x2: f64 = 0.0;
+                // let mut y2: f64 = 0.0;
+                // let mut w: f64 = 0.0;
+                
+                // while x2 + y2 <= 4.0 && iter < self.color_count -1 {
+                //     let x: f64 = x2 - y2 + x0;
+                //     let y: f64 = w - x2 - y2 + y0;
+                //     x2 = x * x;
+                //     y2 = y * y;
+                //     w = (x + y) * (x + y);
+                //     iter += 1;
+                // }
+
+                // Further Optimised Brute Logic: escape time algorithm
                 let mut x2: f64 = 0.0;
                 let mut y2: f64 = 0.0;
-                let mut w: f64 = 0.0;
                 
                 while x2 + y2 <= 4.0 && iter < self.color_count -1 {
-                    let x: f64 = x2 - y2 + x0;
-                    let y: f64 = w - x2 - y2 + y0;
+                    y = 2.0 * x * y + y0;
+                    x = x2 - y2 + x0;
                     x2 = x * x;
                     y2 = y * y;
-                    w = (x + y) * (x + y);
                     iter += 1;
                 }
 
